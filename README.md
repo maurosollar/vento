@@ -20,3 +20,26 @@ ESPECIFICAÇÕES - Biruta
 * Eixo indicador com 200 mm
 * Cabo manga com 6 metros
 ```
+
+```
+Adquirido uma placa WT32-ETH01 baseada no ESP32 + Ethernet LAN8720 integrados como objetivo de criar um monitoramento velocidade do vento e direção retornando em JSON.
+
+Instalado ferramenta do ESP32
+pip install esptool
+
+Com um adaptador RS-232 3.3v
+WT32-ETH01 é 3.3v, mas tem entrada de 5v que passa por um regulador de 3.3v
+
+Apaga todo conteúdo da flash
+esptool.py --chip esp32 --port /dev/ttyUSB0 erase_flash
+Grava o firmware no ESP32 Obs.: O RX e TX tem dois na placa, utilizar o da extremidade.
+esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 460800 write_flash -z 0x1000 esp32-20230426-v1.20.0.bin (baixado do www.micropython.com)
+
+Instalado o aplicativo Thonny
+Vá em Tools
+        Options
+          Interpreter
+            Selecione MicroPython (ESP32)
+            Selecione o dispositivo serial
+A partir daí copiar os código para o módulo
+```
