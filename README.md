@@ -31,9 +31,9 @@ pip install esptool
 Com um adaptador RS-232 3.3v
 WT32-ETH01 é 3.3v, mas tem entrada de 5v que passa por um regulador de 3.3v
 
-Apaga todo conteúdo da flash
+Apaga todo conteúdo da flash do W32-ETH0
 esptool.py --chip esp32 --port /dev/ttyUSB0 erase_flash
-Grava o firmware no ESP32 Obs.: O RX e TX tem dois na placa, utilizar o da extremidade.
+Grava o firmware MicroPython no ESP32 Obs.: O RX e TX tem dois na placa, utilizar o da extremidade.
 esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 460800 write_flash -z 0x1000 esp32-20230426-v1.20.0.bin (baixado do www.micropython.com)
 
 Instalado o aplicativo Thonny
