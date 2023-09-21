@@ -2,7 +2,7 @@
 
 
 ```
-Comprado d WRF COMERCIAL - CICLUS Estações Meteorológicas
+Comprado da WRF COMERCIAL - CICLUS Estações Meteorológicas
 
 ESPECIFICAÇÕES - Anemômetro:
 * "Canecos" em alumínio c/ 50 mm diâmetro
