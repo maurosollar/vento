@@ -1,10 +1,11 @@
 # Anemômetro e direção do vento
 
+<img src="./anemometro_direcao_vento.JPG" width="573" height="661">
 
 ```
 Comprado da WRF COMERCIAL - CICLUS Estações Meteorológicas
 
-<img src="./anemometro_direcao_vento.JPG" width="573" height="661">
+
 
 ESPECIFICAÇÕES - Anemômetro:
 * "Canecos" em alumínio c/ 50 mm diâmetro
