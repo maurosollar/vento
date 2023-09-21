@@ -22,7 +22,8 @@ ESPECIFICAÇÕES - Biruta
 ```
 
 ```
-Adquirido uma placa WT32-ETH01 baseada no ESP32 + Ethernet LAN8720 integrados como objetivo de criar um monitoramento velocidade do vento e direção retornando em JSON.
+Adquirido uma placa WT32-ETH01 baseada no ESP32 + Ethernet LAN8720 integrados como
+objetivo de criar um monitoramento velocidade do vento e direção retornando em JSON.
 
 Instalado ferramenta do ESP32
 pip install esptool
