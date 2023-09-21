@@ -1,6 +1,6 @@
 # Anemômetro e direção do vento
 
-<img src="./anemometro_direcao_vento.JPG" width="573" height="661">
+<img src="./anemometro_direcao_vento.JPG" width="420" height="420">
 
 ```
 Comprado da WRF COMERCIAL - CICLUS Estações Meteorológicas
