@@ -22,4 +22,4 @@ wind_speed_last_intrpt = ticks_ms()
 
 wind_speed_pin.irq(trigger=Pin.IRQ_RISING, handler=wind_speed_isr)
 
-data_check_timer.init(period=1000, mode=Timer.PERIODIC, callback=record_weather_data_points)
+data_check_timer.init(period=1000, mode=Timer.PERIODIC, callback=calcula_dados)
