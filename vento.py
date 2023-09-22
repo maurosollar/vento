@@ -28,7 +28,7 @@ while not lan.isconnected():
 
 wind_speed_last_int = ticks_ms()
 contador = 0
-raio_anemometro = 147
+raio_anemometro = 147   # Verificar quantos mm de raio ao chegar o Anemômetro
 amostragem = 5
 
 sleep(3)
@@ -48,7 +48,7 @@ def calcula(timer):
     rpm = round(contador*(60/amostragem),1)
     contador = 0
     val_adc = wind_dir_pin.read_u16() # Faixa 0-65535
-    if val_adc <= 0.27:
+    if val_adc <= 0.27:   # testar estes valores ao chegar o aparelho.
         dir_grau = 315
         dir_nome = "Noroeste"
     elif val_adc <= 0.32:
