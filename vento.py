@@ -1,4 +1,4 @@
-import esp32, network, json, ssd1306, utils
+import esp32, network, json, ssd1306, utils, math
 from machine import Pin, SoftI2C, ADC, Timer
 from micropyserver import MicroPyServer
 from time import sleep
@@ -27,6 +27,9 @@ while not lan.isconnected():
     pass
 
 global contador = 0
+global raio_anemometro = 147
+global direcao
+global velocidade
 
 sleep(3)
 endip = lan.ifconfig()[0]
@@ -38,9 +41,12 @@ display.show()
 
 def calcula()
     global contador
+    global raio_anemometro
+    global direcao
+    global velocidade
     rpm = contador
     contador = 0
-    var_adc = adc.read_u16() # Faixa 0-65535
+    var_adc = wind_dir_pin.read_u16() # Faixa 0-65535
     if val_adc <= 0.27:
         dir_grau = 315
         dir_nome = "Noroeste"
@@ -64,9 +70,11 @@ def calcula()
         dir_nome = "Nordeste"
     else:
         dir_grau = 0
-        dir_grau = "Norte"
-    speed = "Velocidade KM/h: " + str(speed)
-    winddir = "Direcao: " + str(winddir)
+        dir_nome = "Norte"
+    direcao = dir_nome
+    velocidade = round((((4 * math.pi * raio_anemometro * rpm)/60)/1000)*3.6,1)
+    speed = "RPM / Velocidade KM/h: " + str(rpm) + ' / ' + str(velocidade))
+    winddir = "Direcao: " + str(dir_nome)
     display.fill(0)
     display.text('End. IP:', 0, 0, 1)
     display.text(endip, 0, 16, 1)
@@ -78,12 +86,14 @@ def wind_speed_int(irq):
     global wind_speed_last_int  # anti repique por software do reed switch mecânico
     global contador
     if ticks_diff(ticks_ms(), wind_speed_last_int) > 5:  # Não menos que 5ms entre pulsos
-        wind_speed_last_intrpt = ticks_ms()
+        wind_speed_last_int = ticks_ms()
         contador += 1
 
 def winddir_speed(request):
     ''' rota principal '''
-    json_str = json.dumps({"speed": speed, "winddir": winddir})
+    global velocidade
+    global direcao
+    json_str = json.dumps({"speed": velocidade, "winddir": direcao})
     server.send("HTTP/1.0 200 OK\n")
     server.send("Content-Type: application/json\n")
     server.send("Connection: close\n\n")      
