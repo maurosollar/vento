@@ -44,3 +44,23 @@ Vá em Tools
             Selecione o dispositivo serial
 A partir daí copiar os código para o módulo
 ```
+
+```
+Cabo manga do anemômetro e direção do vento:
+
+  Preto      Vermelho Verde      Amarelo
+    |           |       |           |
+    |           +---+---+           |
+    +-----+         |         +-----|
+    |     \         |         \     |
+    |     / 10K     |    4.7K /     |
+    |     \         |         \     |
+    |     +         |         +     |
+    |     |         |         |     |
+    |     |         °         |     |
+    °     °        3.3V       °     °
+   Pin   GND                 GND   Pin
+   35                             4 ADC
+   RPM                            Direção
+
+```
