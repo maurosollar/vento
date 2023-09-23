@@ -28,7 +28,7 @@ while not lan.isconnected():
 
 wind_speed_last_int = ticks_ms()
 contador = 0
-raio_anemometro = 147   # Verificar quantos mm de raio ao chegar o Anemômetro
+raio_anemometro = 147   # Ao chegar o Anemômetro colocar aqui o raio em mm
 amostragem = 5
 
 sleep(3)
@@ -48,7 +48,7 @@ def calcula(timer):
     rpm = round(contador*(60/amostragem),1)
     contador = 0
     val_adc = wind_dir_pin.read_u16() # Faixa 0-65535
-    if val_adc <= 0.27:   # testar estes valores ao chegar o aparelho.
+    if val_adc <= 0.27:   # testar estes valores ao chegar o equipamento
         dir_grau = 315
         dir_nome = "Noroeste"
     elif val_adc <= 0.32:
@@ -88,7 +88,7 @@ def wind_speed_int(irq):
     global wind_speed_last_int
     global contador
     print('vento', contador)
-    if ticks_diff(ticks_ms(), wind_speed_last_int) > 5:  # Não menos que 5ms entre pulsos, tratamento de debounce
+    if ticks_diff(ticks_ms(), wind_speed_last_int) > 5:  # Tratamento de debounce 5ms
         wind_speed_last_int = ticks_ms()
     contador += 1
 
@@ -103,9 +103,9 @@ def winddir_speed(request):
     server.send(json_str)
 
 
-wind_speed_pin.irq(trigger=Pin.IRQ_RISING, handler=wind_speed_int) # executa rotina "wind_speed_int" toda vez que o pino de entrar entrar em nível alto
+wind_speed_pin.irq(trigger=Pin.IRQ_RISING, handler=wind_speed_int) # executa rotina "wind_speed_int" toda vez que o pino de entrar em nível alto
 
-data_check_timer.init(period=amostragem*1000, mode=Timer.PERIODIC, callback=calcula) # executa rotina "calcula" no intervalos em segundos determinado pela variável "amostragem"
+data_check_timer.init(period=amostragem*1000, mode=Timer.PERIODIC, callback=calcula) # executa rotina "calcula" intervalados em segundos determinado pela variável "amostragem"
 
 server = MicroPyServer()
 server.add_route("/", winddir_speed)
