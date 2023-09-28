@@ -42,7 +42,8 @@ display.show()
 def calcula(timer):
     global contador
     global raio_anemometro
-    global direcao
+    global dir_nome
+    global dir_grau
     global velocidade
     global amostragem
     rpm = round(contador*(60/amostragem),1)
@@ -72,7 +73,6 @@ def calcula(timer):
     else:
         dir_grau = 0
         dir_nome = "Norte"
-    direcao = dir_nome        
     velocidade = round((((4 * math.pi * raio_anemometro * rpm)/60)/1000)*3.6,1)
     print('calcula: ', val_adc, 'direção:', dir_nome, 'RPM:', rpm, 'Velocidade:', velocidade)
     winddir = "Direcao: " + str(dir_nome)
@@ -95,8 +95,9 @@ def wind_speed_int(irq):
 def winddir_speed(request):
     ''' rota principal '''
     global velocidade
-    global direcao
-    json_str = json.dumps({"speed": velocidade, "winddir": direcao})
+    global dir_nome
+    global dir_grau
+    json_str = json.dumps({"speed": velocidade, "winddir": dir_nome, "wingrau": dir_grau})
     server.send("HTTP/1.0 200 OK\n")
     server.send("Content-Type: application/json\n")
     server.send("Connection: close\n\n")      
