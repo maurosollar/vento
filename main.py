@@ -49,31 +49,32 @@ def calcula(timer):
     rpm = round(contador*(60/amostragem),1)
     contador = 0
     val_adc = wind_dir_pin.read_u16() # Faixa 0-65535
-    if val_adc <= 8192:   # testar estes valores ao chegar o equipamento
-        dir_grau = 315
-        dir_nome = "Noroeste"
-    elif val_adc <= 16384:
-        dir_grau = 270
-        dir_nome = "Oeste"
-    elif val_adc <= 24576:
-        dir_grau = 225
-        dir_nome = "Sudoeste"
-    elif val_adc <= 32768:
-        dir_grau = 180
-        dir_nome = "Sul"
-    elif val_adc <= 40960: 
+    if val_adc <= 17857: 
         dir_grau = 135
         dir_nome = "Sudeste"
-    elif val_adc <= 49152:
+	elif val_adc <= 19788:
         dir_grau = 90
         dir_nome = "Leste"
-    elif val_adc <= 57344:  
+  elif val_adc <= 22188:  
         dir_grau = 45
         dir_nome = "Nordeste"
-    else:
+    elif val_adc <= 25255:
         dir_grau = 0
-        dir_nome = "Norte"
-    velocidade = round((((4 * math.pi * raio_anemometro * rpm)/60)/1000)*3.6,1)
+        dir_nome = "Norte"			
+    elif val_adc <= 29311:
+        dir_grau = 315
+        dir_nome = "Noroeste"
+    elif val_adc <= 34933:
+        dir_grau = 270
+        dir_nome = "Oeste"
+    elif val_adc <= 43258:
+        dir_grau = 225
+        dir_nome = "Sudoeste"
+    else:
+        dir_grau = 180
+        dir_nome = "Sul"
+
+velocidade = round((((4 * math.pi * raio_anemometro * rpm)/60)/1000)*3.6,1)
     print('calcula: ', val_adc, 'direção:', dir_nome, 'RPM:', rpm, 'Velocidade:', velocidade)
     winddir = "Direcao: " + str(dir_nome)
     display.fill(0)
