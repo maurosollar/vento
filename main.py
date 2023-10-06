@@ -52,10 +52,10 @@ def calcula(timer):
     if val_adc <= 17857: 
         dir_grau = 135
         dir_nome = "Sudeste"
-	elif val_adc <= 19788:
+    elif val_adc <= 19788:
         dir_grau = 90
         dir_nome = "Leste"
-  elif val_adc <= 22188:  
+    elif val_adc <= 22188:  
         dir_grau = 45
         dir_nome = "Nordeste"
     elif val_adc <= 25255:
