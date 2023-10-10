@@ -74,7 +74,7 @@ def calcula(timer):
         dir_grau = 180
         dir_nome = "Sul"
 
-velocidade = round((((4 * math.pi * raio_anemometro * rpm)/60)/1000)*3.6,1)
+    velocidade = round((((4 * math.pi * raio_anemometro * rpm)/60)/1000)*3.6,1)
     print('calcula: ', val_adc, 'direção:', dir_nome, 'RPM:', rpm, 'Velocidade:', velocidade)
     winddir = "Direcao: " + str(dir_nome)
     display.fill(0)
