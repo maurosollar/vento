@@ -88,10 +88,11 @@ def calcula(timer):
 def wind_speed_int(irq):
     global wind_speed_last_int
     global contador
-    print('vento', contador)
-    if ticks_diff(ticks_ms(), wind_speed_last_int) > 5:  # Tratamento de debounce 5ms
+    dif = ticks_diff(ticks_ms(), wind_speed_last_int)
+    print('vento', contador, dif)
+    if dif > 5:  # Tratamento de debounce 5ms
         wind_speed_last_int = ticks_ms()
-    contador += 1
+        contador += 1
 
 def winddir_speed(request):
     ''' rota principal '''
