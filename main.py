@@ -28,7 +28,7 @@ while not lan.isconnected():
 
 wind_speed_last_int = ticks_ms()
 contador = 0
-raio_anemometro = 147   # Ao chegar o Anemômetro colocar aqui o raio em mm
+raio_anemometro = 210   # Ao chegar o Anemômetro colocar aqui o raio em mm
 amostragem = 5
 
 sleep(3)
