@@ -1,21 +1,23 @@
-import esp32, network, json, ssd1306, utils, math
+import esp32, network, json, ssd1306, utils, math, onewire, ds2423, ads1x15
 from machine import Pin, SoftI2C, ADC, Timer
 from micropyserver import MicroPyServer
 from time import sleep, ticks_ms, ticks_diff
 
-WIND_DIR_PIN = 4
-WIND_SPD_PIN = 35
-
-wind_dir_pin = ADC(Pin(WIND_DIR_PIN))
-wind_speed_pin = Pin(WIND_SPD_PIN, Pin.IN)
+ONE_WIRE_PIN = 0
 
 data_check_timer = Timer(2)
 
 i2c = SoftI2C(scl=Pin(32), sda=Pin(33), freq=400000) # IO33=485_EN / IO32=CFG
-
 display = ssd1306.SSD1306_I2C(128, 64, i2c)
+adc = ADS1115(i2c, address = 72, gain = 1)
 
-# Visto no site do MicroPython - Wireless-Tag's WT32-ETH01 v1.4
+
+ow = onewire.OneWire(Pin(ONE_WIRE_PIN))
+counter = ds2423.DS2423(ow)
+
+for rom in counter.scan():
+    counter.begin(bytearray(rom))
+
 lan = network.LAN(mdc=Pin(23), mdio=Pin(18),
                   phy_type=network.PHY_LAN8720, phy_addr=1,
                   power=Pin(16))
@@ -26,11 +28,6 @@ if not lan.active():
 while not lan.isconnected():
     pass
 
-wind_speed_last_int = ticks_ms()
-contador = 0
-raio_anemometro = 210   # Ao chegar o Anemômetro colocar aqui o raio em mm
-amostragem = 5
-
 sleep(3)
 endip = lan.ifconfig()[0]
 display.fill(0)
@@ -38,6 +35,9 @@ display.text('IP:', 0, 0, 1)
 display.text(endip, 32, 0, 1)
 display.show()
 
+raio_anemometro = 210   # Ao chegar o Anemômetro colocar aqui o raio em mm
+amostragem = 5
+contador = counter.get_count("DS2423_COUNTER_A")
 
 def calcula(timer):
     global contador
@@ -46,9 +46,13 @@ def calcula(timer):
     global dir_grau
     global velocidade
     global amostragem
-    rpm = round(contador*(60/amostragem),1)
-    contador = 0
-    val_adc = wind_dir_pin.read_u16() # Faixa 0-65535
+    contador_anterior = contador
+    contador = counter.get_count("DS2423_COUNTER_A")
+    if contador < contador_anterior:
+        contador = 0 # Depois pegar o valor máximo 32 bits e calcular o valor correto
+        contador_anterior = 0
+    voltas = contador - contador_anterior
+    val_adc = adc.read()
     if val_adc <= 17857: 
         dir_grau = 135
         dir_nome = "Sudeste"
@@ -74,6 +78,7 @@ def calcula(timer):
         dir_grau = 180
         dir_nome = "Sul"
 
+    rpm = voltas*(60/amostragem)
     velocidade = round((((4 * math.pi * raio_anemometro * rpm)/60)/1000)*3.6,1)
     print('calcula: ', val_adc, 'direção:', dir_nome, 'RPM:', rpm, 'Velocidade:', velocidade)
     winddir = "Direcao: " + str(dir_nome)
@@ -85,15 +90,6 @@ def calcula(timer):
     display.text('Dir.:' + dir_nome, 0, 48, 1)   
     display.show()
 
-def wind_speed_int(irq):
-    global wind_speed_last_int
-    global contador
-    dif = ticks_diff(ticks_ms(), wind_speed_last_int)
-    print('vento', contador, dif)
-    if dif > 5:  # Tratamento de debounce 5ms
-        wind_speed_last_int = ticks_ms()
-        contador += 1
-
 def winddir_speed(request):
     ''' rota principal '''
     global velocidade
@@ -104,9 +100,6 @@ def winddir_speed(request):
     server.send("Content-Type: application/json\n")
     server.send("Connection: close\n\n")      
     server.send(json_str)
-
-
-wind_speed_pin.irq(trigger=Pin.IRQ_RISING, handler=wind_speed_int) # executa rotina "wind_speed_int" toda vez que o pino de entrar em nível alto
 
 data_check_timer.init(period=amostragem*1000, mode=Timer.PERIODIC, callback=calcula) # executa rotina "calcula" intervalados em segundos determinado pela variável "amostragem"
 
