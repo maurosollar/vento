@@ -49,7 +49,7 @@ def calcula(timer):
     contador_anterior = contador
     contador = counter.get_count("DS2423_COUNTER_A")
     if contador < contador_anterior: # trata a virada do contador DS2423 de 32 bits
-        voltas = (4294967295 - contador_anterior)
+        voltas = (4294967295 - contador_anterior + contador)
     else:
         voltas = contador - contador_anterior
     val_adc = adc.read()
