@@ -1,7 +1,7 @@
 import esp32, network, json, ssd1306, utils, math, onewire, ds2423, ads1x15
 from machine import Pin, SoftI2C, ADC, Timer
 from micropyserver import MicroPyServer
-from time import sleep, ticks_ms, ticks_diff
+from time import sleep
 
 ONE_WIRE_PIN = 14
 
@@ -10,7 +10,6 @@ data_check_timer = Timer(2)
 i2c = SoftI2C(scl=Pin(32), sda=Pin(33), freq=400000) # IO33=485_EN / IO32=CFG
 display = ssd1306.SSD1306_I2C(128, 64, i2c)
 adc = ads1x15.ADS1115(i2c, address = 72, gain = 2)
-
 
 ow = onewire.OneWire(Pin(ONE_WIRE_PIN))
 counter = ds2423.DS2423(ow)
@@ -38,6 +37,7 @@ display.show()
 raio_anemometro = 210
 amostragem = 5
 contador = counter.get_count("DS2423_COUNTER_A")
+rpm = 0
 
 def calcula(timer):
     global contador
@@ -46,6 +46,7 @@ def calcula(timer):
     global dir_grau
     global velocidade
     global amostragem
+    global rpm
     contador_anterior = contador
     contador = counter.get_count("DS2423_COUNTER_A")
     if contador < contador_anterior: # trata a virada do contador DS2423 de 32 bits
@@ -96,7 +97,8 @@ def winddir_speed(request):
     global velocidade
     global dir_nome
     global dir_grau
-    json_str = json.dumps({"speed": velocidade, "winddir": dir_nome, "wingrau": dir_grau})
+    global rpm
+    json_str = json.dumps({"speed": velocidade, "winddir": dir_nome, "wingrau": dir_grau, "rpm": rpm})
     server.send("HTTP/1.0 200 OK\n")
     server.send("Content-Type: application/json\n")
     server.send("Connection: close\n\n")      
