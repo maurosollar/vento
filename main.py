@@ -3,13 +3,13 @@ from machine import Pin, SoftI2C, ADC, Timer
 from micropyserver import MicroPyServer
 from time import sleep, ticks_ms, ticks_diff
 
-ONE_WIRE_PIN = 0
+ONE_WIRE_PIN = 14
 
 data_check_timer = Timer(2)
 
 i2c = SoftI2C(scl=Pin(32), sda=Pin(33), freq=400000) # IO33=485_EN / IO32=CFG
 display = ssd1306.SSD1306_I2C(128, 64, i2c)
-adc = ADS1115(i2c, address = 72, gain = 1)
+adc = ads1x15.ADS1115(i2c, address = 72, gain = 2)
 
 
 ow = onewire.OneWire(Pin(ONE_WIRE_PIN))
@@ -53,25 +53,25 @@ def calcula(timer):
         contador_anterior = 0
     voltas = contador - contador_anterior
     val_adc = adc.read()
-    if val_adc <= 17857: 
+    if val_adc <= 1142: 
         dir_grau = 135
         dir_nome = "Sudeste"
-    elif val_adc <= 19788:
+    elif val_adc <= 2696:
         dir_grau = 90
         dir_nome = "Leste"
-    elif val_adc <= 22188:  
+    elif val_adc <= 3513:  
         dir_grau = 45
         dir_nome = "Nordeste"
-    elif val_adc <= 25255:
+    elif val_adc <= 4437:
         dir_grau = 0
-        dir_nome = "Norte"			
-    elif val_adc <= 29311:
+        dir_nome = "Norte"
+    elif val_adc <= 5740:
         dir_grau = 315
         dir_nome = "Noroeste"
-    elif val_adc <= 34933:
+    elif val_adc <= 7926:
         dir_grau = 270
         dir_nome = "Oeste"
-    elif val_adc <= 43258:
+    elif val_adc <= 12676:
         dir_grau = 225
         dir_nome = "Sudoeste"
     else:
@@ -80,7 +80,7 @@ def calcula(timer):
 
     rpm = voltas*(60/amostragem)
     velocidade = round((((4 * math.pi * raio_anemometro * rpm)/60)/1000)*3.6,1)
-    print('calcula: ', val_adc, 'direção:', dir_nome, 'RPM:', rpm, 'Velocidade:', velocidade)
+    print('Valor ADC:', val_adc, 'Contador:', contador, 'Voltas:', contador - contador_anterior, 'direção:', dir_nome, 'RPM:', rpm, 'Velocidade:', velocidade)
     winddir = "Direcao: " + str(dir_nome)
     display.fill(0)
     display.text('IP:', 0, 0, 1)
