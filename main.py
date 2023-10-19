@@ -106,3 +106,4 @@ data_check_timer.init(period=amostragem*1000, mode=Timer.PERIODIC, callback=calc
 server = MicroPyServer()
 server.add_route("/", winddir_speed)
 server.start()
+
