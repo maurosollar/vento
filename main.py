@@ -102,7 +102,7 @@ def winddir_speed(request):
     server.send("Connection: close\n\n")      
     server.send(json_str)
 
-data_check_timer.init(period=amostragem*1000, mode=Timer.PERIODIC, callback=calcula) # executa rotina "calcula" intervalados em segundos determinado pela variável "amostragem"
+data_check_timer.init(period=amostragem*1000, mode=Timer.PERIODIC, callback=calcula)
 
 server = MicroPyServer()
 server.add_route("/", winddir_speed)
