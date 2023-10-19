@@ -35,7 +35,7 @@ display.text('IP:', 0, 0, 1)
 display.text(endip, 32, 0, 1)
 display.show()
 
-raio_anemometro = 210   # Ao chegar o Anemômetro colocar aqui o raio em mm
+raio_anemometro = 210
 amostragem = 5
 contador = counter.get_count("DS2423_COUNTER_A")
 
@@ -48,11 +48,12 @@ def calcula(timer):
     global amostragem
     contador_anterior = contador
     contador = counter.get_count("DS2423_COUNTER_A")
-    if contador < contador_anterior:
-        contador = 0 # Depois pegar o valor máximo 32 bits e calcular o valor correto
-        contador_anterior = 0
-    voltas = contador - contador_anterior
+    if contador < contador_anterior: # trata a virada do contador DS2423 de 32 bits
+        voltas = (4294967295 - contador_anterior)
+    else:
+        voltas = contador - contador_anterior
     val_adc = adc.read()
+    
     if val_adc <= 1142: 
         dir_grau = 135
         dir_nome = "Sudeste"
@@ -106,4 +107,3 @@ data_check_timer.init(period=amostragem*1000, mode=Timer.PERIODIC, callback=calc
 server = MicroPyServer()
 server.add_route("/", winddir_speed)
 server.start()
-
