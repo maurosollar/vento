@@ -20,6 +20,7 @@ for rom in counter.scan():
 lan = network.LAN(mdc=Pin(23), mdio=Pin(18),
                   phy_type=network.PHY_LAN8720, phy_addr=1,
                   power=Pin(16))
+
 if not lan.active():
     lan.active(True)
 
@@ -38,8 +39,6 @@ while not ip_ok:
         break
     sleep(1)
 
-sleep(4)
-endip = lan.ifconfig()[0]
 display.fill(0)
 display.text('IP:', 0, 0, 1)
 display.text(endip, 32, 0, 1)
