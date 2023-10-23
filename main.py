@@ -20,12 +20,23 @@ for rom in counter.scan():
 lan = network.LAN(mdc=Pin(23), mdio=Pin(18),
                   phy_type=network.PHY_LAN8720, phy_addr=1,
                   power=Pin(16))
-
 if not lan.active():
     lan.active(True)
 
 while not lan.isconnected():
     pass
+
+sleep(1)
+ip_ok = False
+maxt = 0
+while not ip_ok:
+    endip = lan.ifconfig()[0]
+    if endip != "0.0.0.0":
+        ip_ok = True
+    maxt += 1
+    if maxt >= 10:
+        break
+    sleep(1)
 
 sleep(4)
 endip = lan.ifconfig()[0]
