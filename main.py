@@ -34,7 +34,7 @@ display.text('IP:', 0, 0, 1)
 display.text(endip, 32, 0, 1)
 display.show()
 
-raio_anemometro = 160
+raio_anemometro = 160 # Total diâmetro até no centro do caneco 160mm, não na extemidade que seria de 2100mm.
 amostragem = 5
 contador = counter.get_count("DS2423_COUNTER_A")
 rpm = 0
