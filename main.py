@@ -44,7 +44,7 @@ display.text('IP:', 0, 0, 1)
 display.text(endip, 32, 0, 1)
 display.show()
 
-raio_anemometro = 160 # Total diâmetro até no centro do caneco 160mm, não na extemidade que seria de 210mm.
+raio_anemometro = 80 # Total diâmetro até no centro do caneco 160mm, não na extemidade que seria de 210mm. Raio 80 mm
 amostragem = 5
 contador = counter.get_count("DS2423_COUNTER_A")
 rpm = 0
@@ -91,7 +91,7 @@ def calcula(timer):
         dir_nome = "Sul"
 
     rpm = voltas*(60/amostragem)
-    velocidade = round((((4 * math.pi * raio_anemometro * rpm)/60)/1000)*3.6,1)
+    velocidade = round((((2 * math.pi * raio_anemometro * rpm)/60)/1000)*3.6,1)
     print('Valor ADC:', val_adc, 'Contador:', contador, 'Voltas:', contador - contador_anterior, 'direção:', dir_nome, 'RPM:', rpm, 'Velocidade:', velocidade)
     winddir = "Direcao: " + str(dir_nome)
     display.fill(0)
