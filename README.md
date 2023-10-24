@@ -64,3 +64,4 @@ Cabo manga do anemômetro e direção do vento:
    RPM                            Direção
 
 ```
+60RPM = 1.81KM/h (r=80mm)
