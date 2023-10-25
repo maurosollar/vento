@@ -1,0 +1,23 @@
+<form action="{{ url_for("gfg")}}" method="post">
+Anemômetro e Direção do vento <br><br>
+<label for="Data:">Seleciona a data desejada:</label>
+<input type="date" id="date" name="date"> <br><br>
+<fieldset>
+    <legend>Selecione o período:</legend>
+
+    <div>
+      <input type="radio" id="dia" name="periodo" value="dia" checked />
+      <label for="dia">Dados do Dia</label>
+    </div>
+
+    <div>
+      <input type="radio" id="mes" name="periodo" value="mes" />
+      <label for="mes">Dados do Mês</label>
+    </div>
+
+    <div>
+      <input type="radio" id="ano" name="periodo" value="ano" />
+      <label for="ano">Dados do Ano</label>
+    </div>
+  </fieldset> <br><br>
+<button type="submit">  Calcula</button>
