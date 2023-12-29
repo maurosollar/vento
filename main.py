@@ -1,5 +1,5 @@
 import esp32, network, json, ssd1306, utils, math, onewire, ds2423, ads1x15
-from machine import Pin, SoftI2C, ADC, Timer
+from machine import Pin, SoftI2C, ADC, Timer, WDT
 from micropyserver import MicroPyServer
 from time import sleep
 
@@ -48,6 +48,7 @@ raio_anemometro = 80 # Total diâmetro até no centro do caneco 160mm, não na e
 amostragem = 5
 contador = counter.get_count("DS2423_COUNTER_A")
 rpm = 0
+wdt = WDT(timeout=10000)  # enable it with a timeout of 10s
 
 def calcula(timer):
     global contador
@@ -57,6 +58,7 @@ def calcula(timer):
     global velocidade
     global amostragem
     global rpm
+    wdt.feed()
     contador_anterior = contador
     contador = counter.get_count("DS2423_COUNTER_A")
     if contador < contador_anterior: # trata a virada do contador DS2423 de 32 bits
