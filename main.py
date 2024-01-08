@@ -93,7 +93,7 @@ def calcula(timer):
         dir_nome = "Sul"
 
     rpm = voltas*(60/amostragem)
-    velocidade = round((((2 * math.pi * raio_anemometro * rpm)/60)/1000)*3.6,1)
+    velocidade = round((((4 * math.pi * raio_anemometro * rpm)/60)/1000)*3.6,1)
     print('Valor ADC:', val_adc, 'Contador:', contador, 'Voltas:', contador - contador_anterior, 'direção:', dir_nome, 'RPM:', rpm, 'Velocidade:', velocidade)
     winddir = "Direcao: " + str(dir_nome)
     display.fill(0)
